@@ -1,0 +1,15 @@
+#include <iostream>  
+#include <vector>
+#include "page_scanner.h"  
+
+using namespace std;
+
+int main(int argc, char* argv[]){
+  string url(argv[1]);
+  cout << url << endl;
+  PageScanner p(argv[1]);
+  p.set_domain();
+  p.read_page();
+  p.process_href_tags();
+  vector<string> clean_hrefs = p.get_clean_hrefs();
+}

@@ -1,0 +1,38 @@
+#include <iostream>
+#include "webweb.h"
+
+using namespace std;
+
+class Crawler
+{
+ private:
+  Webweb * web;
+
+ public:
+  Crawler(){
+    web = new Webweb();
+  }
+
+  void run(string start_url){
+    //el primero siempre tiene un dominio sin sublinks
+    Node * node = new Node(start_url);
+    string url;
+    web->add_node(node);
+    counter = 0;
+    while(counter < web->get_size()){
+      if(counter == 0)
+	url = start_url;
+      else;
+      PageScanner p(url);
+      p.set_domain();
+      p.read_page();
+      p.process_href_tags();
+      vector<string> clean_hrefs = p.get_clean_hrefs();
+      //mter hrefs a donde caigan
+      //2do loop dentro del dominio domains[i]
+      //
+      ++counter;
+    }
+  }
+  
+}

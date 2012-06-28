@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <sstream>
+
+using namespace std;
+
+class Cleaner
+{
+private:
+  vector<string> hrefs;
+  string html;
+  
+public:
+  Cleaner(string html_){
+    html = html
+  }
+
+  string parse_line(string line){
+    size_t pos = line.find("href");
+    if(pos != string::npos){
+      int i = pos + 6;
+      for(; i != "\""; ++i );
+      return line.substr(pos+6, i);
+    }
+    return "#";
+  }
+
+  void clean(){
+    stringstream ss(html, stringstream::in);
+    string line;
+    while(getline(ss, line)){
+      
+    }
+  }
+};

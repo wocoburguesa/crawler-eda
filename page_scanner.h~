@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include "reader.h"
+#include "cleaner.h"
+
+using namespace std;
+
+class PageScanner{
+private:
+  string domain;
+  char * url;
+  string html;
+  HTMLGetter * getter;
+  Cleaner * cleaner;
+  vector<string> raw_hrefs;
+  vector<string> clean_hrefs;
+
+public:
+  PageScanner(char * url_){
+    url = url_;
+    getter = new HTMLGetter();
+    cleaner = new Cleaner();
+  }
+
+  void set_domain(){
+    string url_(url);
+    if(url_.substr(0, 4) == "http"){
+      int counter = 0, i = 0;
+      
+      for(; counter < 2; ++i)
+        if(url[i] == '/')
+          ++counter;
+
+      int j = i;
+      for(; url_[j] != '/' && j < url_.length(); ++j);
+      domain = url_.substr(i, j-i);
+    }
+    else{
+      int i = 0;
+      for(; url[i] != '/' && i < url_.length(); ++i);
+      domain = url_.substr(0, i);
+    }
+  }
+
+  void read_page(){
+    getter->read(url, html);
+  }
+
+  void process_href_tags(){
+    raw_hrefs = cleaner->get_href_tags(html);
+    for(int i = 0; i < raw_hrefs.size(); ++i){
+      string clean_href = "";
+      if(raw_hrefs[i].substr(0,4) != "http"){
+        if(raw_hrefs[i][0] == '/')
+          clean_href += domain + raw_hrefs[i];
+      }
+      else
+        clean_href = raw_hrefs[i];
+      clean_hrefs.push_back(clean_href);
+    }
+  }
+
+  vector<string> get_clean_hrefs(){
+    for(int i = 0; i < clean_hrefs.size(); ++i)
+      cout << clean_hrefs[i] << endl;
+    return clean_hrefs;
+  }
+
+  ~PageScanner(){
+    getter->cleanup();
+  }
+  
+};

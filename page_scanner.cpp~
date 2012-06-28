@@ -1,0 +1,27 @@
+#include <iostream>
+#include "reader.h"
+#include "cleaner.h"
+
+using namespace std;
+
+class PageScanner{
+private:
+  string domain;
+  string url;
+  HTMLGetter * getter;
+  Cleaner * cleaner;
+  vector<string> raw_tags, clean_tags;
+
+public:
+  PageScanner(string domain_, string url_){
+    domain = domain_;
+    url = url_;
+    getter = new HTMLGetter();
+    cleaner = new Cleaner();
+  }
+
+  vector<string> process_href_tags(){
+    
+  }
+  
+}

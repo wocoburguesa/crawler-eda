@@ -1,0 +1,29 @@
+#include <iostream>
+#include "page_scanner.h"
+
+using namespace std;
+
+class Node
+{
+ private:
+  set<string> sublinks;
+  set< Node* > links;
+  string domain;
+
+ public:
+  Node(string domain_){
+    domain = domain_;
+    sublinks.clear();
+    links.clear();
+  }
+  
+}
+
+class Webweb
+{
+ private:
+  //  vector<>
+
+ public:
+
+}

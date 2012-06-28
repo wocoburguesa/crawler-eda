@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <sstream>
+
+using namespace std;
+
+class Cleaner
+{
+private:
+  
+public:
+  Cleaner(){}
+
+  string parse_line(string line){
+    size_t pos = line.find("href");
+    if(pos != string::npos){
+      int i = pos + 6;
+      for(; line[i] != '\"'; ++i );
+      return line.substr(pos+6, i-(pos+6));
+    }
+    return "#";
+  }
+
+  vector<string> get_href_tags(string html){
+    vector<string> hrefs;
+    stringstream ss(html, stringstream::in);
+    string line;
+    while(getline(ss, line)){
+      string href = parse_line(line);
+      if(href != "#")
+        hrefs.push_back(href);
+    }
+    return hrefs;
+  }
+
+};
