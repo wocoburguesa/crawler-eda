@@ -1,15 +1,18 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <boost/thread.hpp>
 #include "crawler.h"
 
 using namespace std;
 
 int main(int argc, char* argv[]){
-  Crawler c;
+  Crawler c("save.txt");
+  c.restore();
   string url;
   cin >> url;
   c.run(url);
+  c.save();
   /*  string url;    
   vector<string> urls;
   cin >> url;

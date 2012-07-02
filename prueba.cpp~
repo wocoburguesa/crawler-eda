@@ -1,0 +1,42 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+
+using namespace std;
+
+class Persona{
+
+  friend class boost::serialization::access;
+  template<class Archive>
+    void serialize(Archive &ar, const unsigned int file_version){
+    ar & nombre;
+  }
+  string nombre;
+ public:
+  Persona(){};
+  Persona(string n){ nombre = n; }
+  string get_n(){
+    return nombre;
+  }
+};
+
+void save_p(const Persona &p, const char * filename){
+  ofstream ofs(filename);
+  boost::archive::text_oarchive oa(ofs);
+  oa << p;
+}
+
+void restore_p(Persona &p, const char * filename){
+  ifstream ifs(filename);
+  boost::archive::text_iarchive ia(ifs);
+  ia >> p;
+  }
+
+int main(int argc, char* argv[]){
+  Persona a;
+  string arch = "text.txt";
+  restore_p(a, arch.c_str());
+  cout << a.get_n() << endl;
+};
