@@ -1,4 +1,6 @@
 #include <iostream>
+#include <boost/thread.hpp>
+#include <boost/bind.hpp>
 #include "webweb.h"
 
 using namespace std;
@@ -8,10 +10,13 @@ class Crawler
  private:
   Webweb * web;
   string save_file;
+  string start_url;
+  boost::thread_group tg;
 
  public:
-  Crawler(string s){
+  Crawler(string s, string url){
     save_file = s;
+    start_url = url;
     web = new Webweb();
   }
 
@@ -27,7 +32,7 @@ class Crawler
     ia >> *web;
   }
 
-  void run(string start_url){
+  void run(){
     //el primero siempre tiene un dominio sin sublinks
 
     /********/
@@ -69,6 +74,7 @@ class Crawler
 
       //delete(p);
       clean_hrefs.clear();
+
       for(int i = node->get_last(); i < 2 && i < node->get_sublink_size(); ++i){
 	cout << "URL N#" << counter << "_" << i << ": " << node->get_nth_sublink(i) << endl;
 	PageScanner p(node->get_nth_sublink(i));
@@ -84,6 +90,11 @@ class Crawler
       ++counter;
       web->increase_last();
     }
+  }
+
+  ~Crawler(){
+    cout << "chau" << endl;
+    save();
   }
   
 };

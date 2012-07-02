@@ -73,7 +73,9 @@ public:
 	}
 	else
 	  clean_href = raw_hrefs[i];
-	clean_hrefs.push_back(clean_href);
+	if(clean_href.length() > 0 &&
+	   cleaner->is_dot_pe(clean_href))
+	   clean_hrefs.push_back(clean_href);
       }
     }
   }

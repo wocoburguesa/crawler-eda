@@ -86,6 +86,7 @@ class Webweb
  public:
   vector< Node* > domains;
   int last;
+
   Webweb(){
     domains.clear();
     last = 0;

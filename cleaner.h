@@ -19,6 +19,27 @@ public:
     return 0;
   }
 
+  bool is_dot_pe(string addr){
+    if(addr.substr(0,4) == "http"){
+      int i = 0;
+      int slash_count = 0;
+      for(; i < addr.length() && slash_count < 3; ++i){
+	if(addr[i] == '/')
+	  ++slash_count;
+      }
+      if(addr.substr(i-3, 2) == "pe")
+	return 1;
+    }
+    else{
+      int i = 0;
+      while(addr[i] != '/' && i < addr.length())
+	++i;
+      if(addr.substr(i-2-(i==addr.length()), 2) == "pe")
+	return 1;
+    }
+    return 0;
+  }
+
   string parse_line(string line){
     if(!is_valid(line))
       return "#";
@@ -27,7 +48,10 @@ public:
     if(pos != string::npos){
       int i = pos + 6;
       for(; line[i] != '\"' && line[i] != '\''; ++i );
-      return line.substr(pos+6, i-(pos+6));
+      //      if(is_dot_pe(line.substr(pos+6, i-(pos+6))))
+	  return line.substr(pos+6, i-(pos+6));
+	  /*       else
+		   return "#";*/
     }
     return "#";
   }
